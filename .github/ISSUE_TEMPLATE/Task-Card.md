@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Task-Card
 about: Suggest an idea for this project
 title: "[Task]"
 labels: ''
