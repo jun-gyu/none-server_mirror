@@ -10,9 +10,8 @@ const AuthFormWrapper = styled.div`
     display: block;
     font-size: 2rem;
     color: #ffa2a2;
-    margin-bottom: 3rem;
+    margin: 2rem;
   }
-  margin-top: 6%;
 `;
 
 const InputStyled = styled.input`
@@ -33,8 +32,8 @@ const InputStyled = styled.input`
 
 const SignActionFooter = styled.div`
   position: absolute;
-  bottom: 5%;
-  right: 15%;
+  bottom: 3%;
+  right: 11%;
   width: 80%;
   text-align: right;
   a {
@@ -68,6 +67,8 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
   const text = textMap[type];
   return (
     <AuthFormWrapper>
+      <div className="project-title">Check-it-out</div>
+      <img className="bookIcon" src="https://img.icons8.com/plasticine/100/000000/book-and-pencil.png"/>
       <strong>{text}</strong>
       <form onSubmit={onSubmit}>
         {text === "Sign Up" && (
