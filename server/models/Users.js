@@ -5,12 +5,12 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true, // required:true 는 이값이null이 아니여야한다는 뜻
   },
-  userid: {
+  useremail: {
     type: String,
     required: true,
+    unique: true,
   },
-  provider: {
-    // social login 시 어느 social 인지, 예) 카카오, 구글.
+  password: {
     type: String,
     required: true,
   },
@@ -20,4 +20,4 @@ const userSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("users", userSchema);
+module.exports = mongoose.model("User", userSchema);

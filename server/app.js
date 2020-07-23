@@ -1,35 +1,45 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const app = express();
-
+const connectDB = require("./config/db");
 const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
+const dotenv = require("dotenv");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-require("dotenv/config");
+
 //session 을 알아보자.
-//*Route
-const usersRoute = require("./router/users");
+//*Load config
+dotenv.config({ path: "./config/.env" });
+
+//* connect db
+connectDB();
 
 //*middle ware
 /*
  * session(option)
  * secret - session hijacking을 막기위해 hash값에 추가로 들어가는 값 (Salt와 비슷한 개념)
- * resave - session을 언제나 저장할지 정하는 값
+ * resave - true = > 세션이 수정 되었다면 저장 false => 수정되지 않았다면 재 저장 안함.
  * saveUninitialize: true - 세션이 저장되기 전에 uninitialized 상태로 만들어 저장
  */
-
+// const sessionStore = new MongoStore({
+//   mongooseConnection: connectDB,
+//   collection: "sessions",
+// });
 app.use(
   session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
+    // store: sessionStore,
+    cookie: { maxAge: 1000 * 60 * 60 }, // 60분
   })
 );
+
 app.use(
   cors({
     origin: [`http://localhost:${process.env.PORT}`],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELTE"],
+    methods: ["GET", "POST"],
     credentials: true,
   })
 );
@@ -37,7 +47,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //*router
-app.use("/users", usersRoute);
+app.use("/users", require("./router/users"));
 
 //*get 요청 처리
 app.get("/", (req, res) => {
@@ -46,13 +56,6 @@ app.get("/", (req, res) => {
 
 //? loggin 활용. (postman 사용시)
 app.use(morgan("dev"));
-
-//*connect To DB
-mongoose
-  .connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => {
-    console.log("conneted to DB!");
-  })
-  .catch((e) => console.error(e));
 
 //*Listening to the server
 app.listen(process.env.PORT, () => {
