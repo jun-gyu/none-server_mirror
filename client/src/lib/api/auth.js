@@ -4,11 +4,11 @@ import client from './client';
 
 // 회원가입
 export const signup = ({ username, useremail, password }) => 
-  client.post('./api/auth/signup', { username, password });
+  client.post('http://localhost:3000/users/signup', { username, password });
 
 // 로그인
 export const signin = ({ useremail, password }) => 
-  client.post('/api/auth/signin', ( useremail, password ));
+  client.post('http://localhost:3000/users/signin', ( useremail, password ));
 
 // 로그인 상태 확인
-export const check = () => client.get('/api/auth/check');
+export const check = () => client.get("http://localhost:3000/users/signin");

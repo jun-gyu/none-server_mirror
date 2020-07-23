@@ -43,14 +43,14 @@ export function* authSaga(){
 
 const initialState = {
   signup: {
-    username: "이효진",
-    useremail: "gywls3394@gamil.com",
-    password: "1234",
-    passwordConfirm: "1234",
+    username: "",
+    useremail: "",
+    password: "",
+    passwordConfirm: "",
   },
   signin: {
-    useremail: "gywls3394@gamil.com",
-    password: "1234",
+    useremail: "",
+    password: "",
   },
   auth: null,
   authError: null,
