@@ -1,43 +1,51 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("../models/Users");
+// const convertHash = require("../helpfunction/crypto");
 
 router.post("/signin", async (req, res) => {
   try {
     const { useremail, password } = req.body;
-    const users = await Users.findOne({
-      useremail: useremail,
-      password: password,
-    });
-    console.log("users: ", users);
-
+    // const hashedPassword = convertHash(password);
+    const users = await Users.findOne(
+      {
+        useremail: useremail,
+        password: password,
+      },
+      { date: 0, username: 0, _id: 0, __v: 0 }
+    );
+    console.log("what is in users", users);
     if (users !== null) {
-      console.log("hi im in if");
-      res.status(200).send("로그인 성공! 효진아 사랑해.");
+      res.status(200).send("");
     } else {
-      console.log(`im in else`);
-      res.status(400).send("효진아 사랑해. 회원가입해야뎅 헿");
+      res.status(404).send("");
     }
   } catch (err) {
-    res.json({ message: err });
+    res.status(400).json({ message: err });
   }
 });
-
 router.post("/signup", async (req, res) => {
   let { username, useremail, password } = req.body;
-  const user = new Users({
-    username: username,
+  // const hashedPassword = convertHash(password);
+  const isExist = await Users.findOne({
     useremail: useremail,
     password: password,
   });
-
-  try {
-    //*post instance를 mongoDB 에 save
-    const savedUser = await user.save();
-    res.json(savedUser);
-  } catch (err) {
-    res.json({ message: err });
+  if (isExist === null) {
+    const user = new Users({
+      username: username,
+      useremail: useremail,
+      password: password,
+    });
+    try {
+      //*post instance를 mongoDB 에 save
+      const savedUser = await user.save();
+      res.status(200).send("good");
+    } catch (err) {
+      res.status(400).json({ message: err });
+    }
+  } else {
+    res.status(404).send("중복된 회원입니다.");
   }
 });
-
 module.exports = router;
