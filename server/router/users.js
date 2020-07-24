@@ -13,10 +13,10 @@ router.post("/signin", async (req, res) => {
 
     if (users !== null) {
       console.log("hi im in if");
-      res.status(200).send("로그인 성공! 효진아 사랑해.");
+      res.status(200).send("");
     } else {
       console.log(`im in else`);
-      res.status(400).send("효진아 사랑해. 회원가입해야뎅 헿");
+      res.status(400).send("");
     }
   } catch (err) {
     res.json({ message: err });
