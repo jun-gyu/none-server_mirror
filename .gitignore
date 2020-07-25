@@ -1,2 +1,8 @@
-package-lock.json
-node_modules
+# Dependency directories
+node_modules/
+# dotenv environment variables file
+.env
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
