@@ -17,9 +17,9 @@ router.post("/signin", async (req, res) => {
     );
     console.log("what is in users", users);
     if (users !== null) {
-      res.status(200).send("로그인 성공! 효진아 사랑해.");
+      res.status(200).send("success signIn");
     } else {
-      res.status(404).send("효진아 사랑해. 회원가입해야뎅 헿");
+      res.status(404).send("you should signUp");
     }
   } catch (err) {
     res.status(400).send(err);
@@ -44,7 +44,7 @@ router.post("/signup", async (req, res) => {
     try {
       //*post instance를 mongoDB 에 save
       const savedUser = await user.save();
-      res.status(200).send("회원가입 축하드립니다! 사랑해요 효진씨");
+      res.status(200).send("thank you for signUp");
     } catch (err) {
       res.status(400).send(err);
     }
