@@ -1,28 +1,32 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
-  userName: {
+const bookStoreSchema = mongoose.Schema({
+  bookTitle: {
     type: String,
     required: true,
-    lowercase: true,
     max: 255, // required:true 는 이값이null이 아니여야한다는 뜻
   },
-  userEmail: {
+  bookAuthor: {
     type: String,
     required: true,
-    lowercase: true,
-    unique: true,
     max: 255,
   },
-  passWord: {
+  bookImage: {
     type: String,
     required: true,
-    min: 6,
   },
-  bookStore: [
+  bookRate: {
+    type: String,
+    required: true,
+  },
+  bookIsbn: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  report: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "BookStore",
+      type: String,
     },
   ],
   date: {
@@ -31,4 +35,4 @@ const userSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("BookStore", bookStoreSchema);

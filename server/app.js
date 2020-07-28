@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require("express");
 const app = express();
 const connectDB = require("./config/db");
@@ -10,8 +12,8 @@ const morgan = require("morgan");
 
 //session 을 알아보자.
 //*Load config
-dotenv.config({ path: "./config/.env" });
 
+dotenv.config({ path: "./config/.env" });
 //* connect db
 connectDB();
 
@@ -26,15 +28,15 @@ connectDB();
 //   mongooseConnection: connectDB,
 //   collection: "sessions",
 // });
-app.use(
-  session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true,
-    // store: sessionStore,
-    cookie: { maxAge: 1000 * 60 * 60 }, // 60분
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     // store: sessionStore,
+//     cookie: { maxAge: 1000 * 60 * 60 }, // 60분
+//   })
+// );
 
 app.use(
   cors({
@@ -46,12 +48,19 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+/*
+ * 요청 URL 주소
+ * /users/signIn   로그인
+ * /users/signUp   회원가입
+ * /bookStore
+ */
+
 //*router
 app.use("/users", require("./router/users"));
-
+app.use("/bookStore", require("./router/bookStore"));
 //*get 요청 처리
 app.get("/", (req, res) => {
-  res.send("hello there");
+  res.send("hello there , here is the root plz check router");
 });
 
 //? loggin 활용. (postman 사용시)

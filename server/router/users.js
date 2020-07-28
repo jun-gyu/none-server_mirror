@@ -1,55 +1,69 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("../models/Users");
-const convertHash = require("../helpfunction/crypto");
-const jw = require("json");
+const convertHash = require("../middleware/crypto");
+const { makeToken } = require("../middleware/auth");
+const dotenv = require("dotenv");
+dotenv.config({ path: "../config/.env" });
 
-router.post("/signin", async (req, res) => {
+//* signIn post
+router.post("/signIn", async (req, res) => {
   try {
-    const { useremail, password } = req.body;
-    const hashedPassword = convertHash(password);
-    const users = await Users.findOne(
+    const { userEmail, passWord } = req.body;
+
+    const hashedPassWord = convertHash(passWord);
+
+    const user = await Users.findOne(
       {
-        useremail: useremail,
-        password: hashedPassword,
+        userEmail: userEmail,
+        passWord: hashedPassWord,
       },
-      { date: 0, username: 0, _id: 0, __v: 0 }
+      { date: 0, username: 0, __v: 0 }
     );
-    console.log("what is in users", users);
-    if (users !== null) {
-      res.status(200).send("로그인 성공! 효진아 사랑해.");
+
+    //DB 에 user 정보와 맞는게 있다면.!
+    if (user !== null) {
+      //create Token
+      const accessToken = makeToken(user._id, user.userName, user.userEmail);
+      // header 에 Token 추가
+      res.header("auth-token", accessToken).send("success sign In thx!");
     } else {
-      res.status(404).send("효진아 사랑해. 회원가입해야뎅 헿");
+      // DB에 유저 정보와 맞는게 없다면.
+      res.status(404).send("you aren't our member , please signUp");
     }
   } catch (err) {
     res.status(400).send(err);
   }
 });
 
-router.post("/signup", async (req, res) => {
-  let { username, useremail, password } = req.body;
-  const hashedPassword = convertHash(password);
+//* signUp Post
+router.post("/signUp", async (req, res) => {
+  let { userName, userEmail, passWord } = req.body;
+
+  const hashedPassWord = convertHash(passWord);
+
   const isExist = await Users.findOne({
-    useremail: useremail,
-    password: hashedPassword,
+    userEmail: userEmail,
+    passWord: hashedPassWord,
   });
 
-  if (isExist === null) {
+  if (!isExist) {
     const user = new Users({
-      username: username,
-      useremail: useremail,
-      password: hashedPassword,
+      userName: userName,
+      userEmail: userEmail,
+      passWord: hashedPassWord,
+      // bookStore:
     });
 
-    try {
-      //*post instance를 mongoDB 에 save
-      const savedUser = await user.save();
-      res.status(200).send("회원가입 축하드립니다! 사랑해요 효진씨");
-    } catch (err) {
-      res.status(400).send(err);
-    }
+    //*post instance를 mongoDB 에 save
+
+    await user.save((err, docs) => {
+      if (err) console.log("saving err in mongoDB", err);
+    });
+
+    res.status(200).send(`thank you for signUp`);
   } else {
-    res.status(404).send("중복된 회원입니다.");
+    res.status(401).send("중복된 회원입니다.");
   }
 });
 
