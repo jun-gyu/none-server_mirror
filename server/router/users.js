@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("../models/Users");
+const MyLibrary = require("../models/MyLibrary");
 const convertHash = require("../middleware/crypto");
 const { makeToken } = require("../middleware/auth");
 const dotenv = require("dotenv");
@@ -52,13 +53,13 @@ router.post("/signUp", async (req, res) => {
       userName: userName,
       userEmail: userEmail,
       passWord: hashedPassWord,
-      // bookStore:
     });
 
     //*post instance를 mongoDB 에 save
 
     await user.save((err, docs) => {
       if (err) console.log("saving err in mongoDB", err);
+      console.log(docs);
     });
 
     res.status(200).send(`thank you for signUp`);

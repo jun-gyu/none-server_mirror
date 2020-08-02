@@ -11,7 +11,7 @@ function authCheck(req, res, next) {
 
   try {
     const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-    req.user = verified;
+    req.user = verified; //{ user_id, userName, userEmail },
     next();
   } catch (err) {
     res.status(400).send("invalid Token");

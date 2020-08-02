@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
-const bookStoreSchema = mongoose.Schema({
+const myLibrarySchema = mongoose.Schema({
+  uuid: {
+    type: String,
+    required: true,
+  },
   bookTitle: {
     type: String,
     required: true,
@@ -19,20 +23,10 @@ const bookStoreSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  bookIsbn: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  report: [
-    {
-      type: String,
-    },
-  ],
-  date: {
-    type: Date,
-    default: Date.now,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 
-module.exports = mongoose.model("BookStore", bookStoreSchema);
+module.exports = mongoose.model("MyLibrary", myLibrarySchema);

@@ -57,7 +57,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //*router
 app.use("/users", require("./router/users"));
-app.use("/bookStore", require("./router/bookStore"));
+app.use("/myLibrary", require("./router/mylibrary"));
+app.use("/report", require("./router/report"));
 //*get 요청 처리
 app.get("/", (req, res) => {
   res.send("hello there , here is the root plz check router");

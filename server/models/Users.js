@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const userSchema = mongoose.Schema({
   userName: {
     type: String,
@@ -18,16 +17,6 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     min: 6,
-  },
-  bookStore: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "BookStore",
-    },
-  ],
-  date: {
-    type: Date,
-    default: Date.now,
   },
 });
 
