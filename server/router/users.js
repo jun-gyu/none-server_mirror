@@ -25,15 +25,14 @@ router.post("/signIn", async (req, res) => {
     if (user !== null) {
       //create Token
       const accessToken = makeToken(user._id, user.userName, user.userEmail);
-      console.log(accessToken);
       // header 에 Token 추가
-      res.header("auth-token", accessToken).send("success sign In thx!");
+      res.header("auth-token", accessToken).send(accessToken);
     } else {
       // DB에 유저 정보와 맞는게 없다면.
       res.status(404).send("you aren't our member , please signUp");
     }
   } catch (err) {
-    res.status(400).send(err);
+    res.status(400).send(new Error(err));
   }
 });
 
