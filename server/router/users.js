@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("../models/Users");
-const MyLibrary = require("../models/MyLibrary");
 const convertHash = require("../middleware/crypto");
 const { makeToken } = require("../middleware/auth");
 const dotenv = require("dotenv");
@@ -19,7 +18,7 @@ router.post("/signIn", async (req, res) => {
         userEmail: userEmail,
         passWord: hashedPassWord,
       },
-      { date: 0, username: 0, __v: 0 }
+      { date: 0, __v: 0 }
     );
 
     //DB 에 user 정보와 맞는게 있다면.!
@@ -29,7 +28,7 @@ router.post("/signIn", async (req, res) => {
       const accessToken = makeToken(user._id, user.userName, user.userEmail);
 
       // header 에 Token 추가
-      res.header("auth-token", accessToken).send("success sign In thx!");
+      res.header("auth-token", accessToken).send(accessToken);
     } else {
       // DB에 유저 정보와 맞는게 없다면.
       res.status(404).send("you aren't our member , please signUp");

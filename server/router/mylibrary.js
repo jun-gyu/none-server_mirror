@@ -22,15 +22,15 @@ router.get("/getAllBooks", authCheck, async (req, res) => {
 
 router.post("/addBooks", authCheck, async (req, res) => {
   const { user_id } = req.user;
-  console.log("user_id : ", user_id);
 
   const { uuid, bookTitle, bookAuthor, bookImage, bookRate, report } = req.body;
 
   try {
+    console.log('user', req.body)
     await MyLibrary.create({
       uuid: uuid,
       bookTitle: bookTitle,
-      bookAuthor: bookAuthor,
+      bookAuthor: bookAuthor[0],
       bookImage: bookImage,
       bookRate: bookRate,
       report: report,
