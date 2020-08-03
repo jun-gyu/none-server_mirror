@@ -6,9 +6,8 @@ const Users = require("../models/Users");
 const { authCheck } = require("../middleware/auth");
 
 /*
-* myLibrary/getAllBooks
-
-*/
+ * myLibrary/getAllBooks
+ */
 
 router.get("/getAllBooks", authCheck, async (req, res) => {
   const { user_id } = req.user;
@@ -29,7 +28,7 @@ router.post("/addBooks", authCheck, async (req, res) => {
     await MyLibrary.create({
       uuid: uuid,
       bookTitle: bookTitle,
-      bookAuthor: bookAuthor,
+      bookAuthor: bookAuthor[0],
       bookImage: bookImage,
       bookRate: bookRate,
       report: report,

@@ -25,6 +25,7 @@ router.post("/signIn", async (req, res) => {
     if (user !== null) {
       //create Token
       const accessToken = makeToken(user._id, user.userName, user.userEmail);
+
       // header 에 Token 추가
       res.header("auth-token", accessToken).send(accessToken);
     } else {
@@ -32,7 +33,7 @@ router.post("/signIn", async (req, res) => {
       res.status(404).send("you aren't our member , please signUp");
     }
   } catch (err) {
-    res.status(400).send(new Error(err));
+    res.status(400).send(err);
   }
 });
 
