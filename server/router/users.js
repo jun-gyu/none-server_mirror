@@ -24,8 +24,10 @@ router.post("/signIn", async (req, res) => {
 
     //DB 에 user 정보와 맞는게 있다면.!
     if (user !== null) {
+
       //create Token
       const accessToken = makeToken(user._id, user.userName, user.userEmail);
+
       // header 에 Token 추가
       res.header("auth-token", accessToken).send("success sign In thx!");
     } else {
@@ -39,6 +41,7 @@ router.post("/signIn", async (req, res) => {
 
 //* signUp Post
 router.post("/signUp", async (req, res) => {
+  console.log('sss')
   let { userName, userEmail, passWord } = req.body;
 
   const hashedPassWord = convertHash(passWord);
