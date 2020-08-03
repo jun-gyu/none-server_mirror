@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Users = require("../models/Users");
-const MyLibrary = require("../models/MyLibrary");
 const convertHash = require("../middleware/crypto");
 const { makeToken } = require("../middleware/auth");
 const dotenv = require("dotenv");
@@ -19,13 +18,14 @@ router.post("/signIn", async (req, res) => {
         userEmail: userEmail,
         passWord: hashedPassWord,
       },
-      { date: 0, username: 0, __v: 0 }
+      { date: 0, __v: 0 }
     );
 
     //DB 에 user 정보와 맞는게 있다면.!
     if (user !== null) {
       //create Token
       const accessToken = makeToken(user._id, user.userName, user.userEmail);
+      console.log(accessToken);
       // header 에 Token 추가
       res.header("auth-token", accessToken).send("success sign In thx!");
     } else {
