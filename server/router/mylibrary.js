@@ -22,7 +22,6 @@ router.get("/getAllBooks", authCheck, async (req, res) => {
 
 router.post("/addBooks", authCheck, async (req, res) => {
   const { user_id } = req.user;
-  console.log("req.user: ", req.user);
 
   const { uuid, bookTitle, bookAuthor, bookImage, bookRate, report } = req.body;
 

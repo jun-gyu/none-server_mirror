@@ -38,6 +38,7 @@ router.post("/signIn", async (req, res) => {
 
 //* signUp Post
 router.post("/signUp", async (req, res) => {
+  console.log("sss");
   let { userName, userEmail, passWord } = req.body;
 
   const hashedPassWord = convertHash(passWord);
