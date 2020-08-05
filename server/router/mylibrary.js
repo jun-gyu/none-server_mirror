@@ -6,9 +6,8 @@ const Users = require("../models/Users");
 const { authCheck } = require("../middleware/auth");
 
 /*
-* myLibrary/getAllBooks
-
-*/
+ * myLibrary/getAllBooks
+ */
 
 router.get("/getAllBooks", authCheck, async (req, res) => {
   const { user_id } = req.user;
@@ -26,7 +25,6 @@ router.post("/addBooks", authCheck, async (req, res) => {
   const { uuid, bookTitle, bookAuthor, bookImage, bookRate, report } = req.body;
 
   try {
-    console.log('user', req.body)
     await MyLibrary.create({
       uuid: uuid,
       bookTitle: bookTitle,
@@ -41,7 +39,7 @@ router.post("/addBooks", authCheck, async (req, res) => {
     //send 수정해야됩니다 지금은 db에 저장이 되는지 보고있슴다
     res.status(200).send("add Books success");
   } catch (err) {
-    res.status(401).send(err);
+    res.status(403).send(err);
   }
 });
 

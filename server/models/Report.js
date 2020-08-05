@@ -13,9 +13,8 @@ const reportSchema = mongoose.Schema({
     required: true,
   },
   myLibrary: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "MyLibrary",
-    required: true,
   },
   date: {
     type: Date,
