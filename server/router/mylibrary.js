@@ -16,7 +16,7 @@ router.get("/getAllBooks", authCheck, async (req, res) => {
   await MyLibrary.find({ user: user_id }, { __v: 0 }, async (err, docs) => {
     if (err) return res.status(401).send(err);
 
-    res.status(200).json({ MyLibrary: docs });
+    res.status(200).json(docs);
   });
 });
 
