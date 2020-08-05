@@ -15,7 +15,7 @@ router.get("/getAllBooks", authCheck, async (req, res) => {
   await MyLibrary.find({ user: user_id }, { __v: 0 }, async (err, docs) => {
     if (err) return res.status(401).send(err);
 
-    res.status(200).json({ MyLibrary: docs });
+    res.status(200).json(docs);
   });
 });
 
@@ -39,7 +39,7 @@ router.post("/addBooks", authCheck, async (req, res) => {
     //send 수정해야됩니다 지금은 db에 저장이 되는지 보고있슴다
     res.status(200).send("add Books success");
   } catch (err) {
-    res.status(401).send(err);
+    res.status(403).send(err);
   }
 });
 
