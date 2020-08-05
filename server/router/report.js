@@ -64,6 +64,7 @@ router.post("/deleteReport", authCheck, async (req, res) => {
   });
 });
 
+//* updateReport
 router.post("/updateReport", authCheck, async (req, res) => {
   const { uuid, reportMemo } = req.body;
   /*
