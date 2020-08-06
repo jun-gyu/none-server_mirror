@@ -87,7 +87,7 @@ router.post("/updateReport", authCheck, async (req, res) => {
 //* 독후감이 있는 책만 불러오는 작업.
 router.get("/theBooksWithReport", authCheck, async (req, res) => {
   const { user_id } = req.user;
-  console.log(user_id);
+
   /*
    * user_id 로 유저에 맞는 책 조회 후 각 책들의 uuid를 추출, report의 bookUuid와 맞는 책들만 보내줌.
    */
@@ -110,19 +110,25 @@ router.get("/theBooksWithReport", authCheck, async (req, res) => {
   );
   // Report가 가지고 있는 myLibrary ObjectId 들을 populate를 통해
   // ObjectId가 아닌 책 정보가 표시되게끔 하는 작업.
-  console.log("booksas;kdjasldk", books);
+
   const reports = await Report.find(
     {},
-    // { _id: 0, bookUuid: 0, reportUuid: 0, reportMemo: 0, date: 0, __v: 0 },
+    { _id: 0, bookUuid: 0, reportUuid: 0, reportMemo: 0, date: 0, __v: 0 },
     (err) => {
       if (err) return res.status(404).send(err);
     }
   )
-    .populate("myLibrary")
+    .populate("myLibrary", [
+      "bookUuid",
+      "bookTitle",
+      "bookAuthor",
+      "bookImage",
+      "bookRate",
+    ])
     .exec();
-  console.log("reportsgdfgdfdfg", reports);
+
   //books 정보가 없다면 빈배열로 들어옴.
-  if (books.length === 0)
+  if (books.length === 0 || reports.myLibrary === null)
     return res.status(404).send({ message: "can not found your books" }).end();
 
   // 유저가 저장한 책들의 bookUuid와 레포트가 있는 책 정보의 bookUuid를 비교하여 레포트가 있는
