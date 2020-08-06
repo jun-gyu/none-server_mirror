@@ -29,7 +29,8 @@ router.post("/getAllReport", authCheck, async (req, res) => {
 
 //* bookUuid 를 추가하여 report 생성.
 router.post("/addReport", authCheck, async (req, res) => {
-  const { bookUuid, uuid, reportMemo } = req.body;
+  console.log(req.body)
+  const { bookUuid, reportUuid, reportMemo } = req.body;
   /* 
   uuid: 
   reportMemo: 
@@ -42,10 +43,10 @@ router.post("/addReport", authCheck, async (req, res) => {
   //* bookUuid 는 Report 가 ref하고있는 책을 _id 대신 찾기 위해 설정해놓음
   await Report.create(
     {
-      uuid: uuid,
+      reportUuid: reportUuid,
       reportMemo: reportMemo,
       bookUuid: bookUuid,
-      myLibrary: await MyLibrary.findOne({ uuid: bookUuid }),
+      myLibrary: await MyLibrary.findOne({ bookUuid: bookUuid }),
     },
     (err, docs) => {
       if (err) res.status(404).send(err);
@@ -56,9 +57,9 @@ router.post("/addReport", authCheck, async (req, res) => {
 
 //* uuid는 중복율이 굉장히 낮아 uuid로만 report를 찾아 삭제하는 요청.
 router.post("/deleteReport", authCheck, async (req, res) => {
-  const { uuid } = req.body;
+  const { reportUuid } = req.body;
   /*report 에 부여한 uuid 를 요청에 담아 보내주시가만 하면됩니다!*/
-  await Report.remove({ uuid: uuid }, (err, docs) => {
+  await Report.remove({ reportUuid: reportUuid }, (err, docs) => {
     if (err) res.status(404).send(err);
     res.status(200).send(`delete report success`);
   });
@@ -66,7 +67,7 @@ router.post("/deleteReport", authCheck, async (req, res) => {
 
 //* updateReport
 router.post("/updateReport", authCheck, async (req, res) => {
-  const { uuid, reportMemo } = req.body;
+  const { reportUuid, reportMemo } = req.body;
   /*
 {
    "uuid":"12312",
@@ -74,7 +75,7 @@ router.post("/updateReport", authCheck, async (req, res) => {
 }
 */
   await Report.findOneAndUpdate(
-    { uuid: uuid },
+    { reportUuid: reportUuid },
     { reportMemo: reportMemo },
     (err, docs) => {
       if (err) res.status(404).send(err);

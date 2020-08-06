@@ -21,17 +21,16 @@ router.get("/getAllBooks", authCheck, async (req, res) => {
 
 router.post("/addBooks", authCheck, async (req, res) => {
   const { user_id } = req.user;
-
-  const { uuid, bookTitle, bookAuthor, bookImage, bookRate, report } = req.body;
+  console.log(req.user)
+  const { bookUuid, bookTitle, bookAuthor, bookImage, bookRate } = req.body;
 
   try {
     await MyLibrary.create({
-      uuid: uuid,
+      bookUuid: bookUuid,
       bookTitle: bookTitle,
       bookAuthor: bookAuthor[0],
       bookImage: bookImage,
       bookRate: bookRate,
-      report: report,
       user: await Users.findOne({ _id: user_id }),
     });
 
@@ -45,10 +44,10 @@ router.post("/addBooks", authCheck, async (req, res) => {
 
 // myLibrary book delete
 router.post("/deleteBooks", authCheck, async (req, res) => {
-  const { uuid } = req.body;
+  const { bookUuid } = req.body;
 
-  //uuid 에 맞는 ref 북 리스트를 삭제한다.
-  await MyLibrary.remove({ uuid: uuid }, async (err) => {
+  //bookUuid 에 맞는 ref 북 리스트를 삭제한다.
+  await MyLibrary.remove({ bookUuid: bookUuid }, async (err) => {
     if (err) res.status(401).send(err);
     res.status(200).send(`delete books success`);
   });

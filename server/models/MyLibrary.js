@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const myLibrarySchema = mongoose.Schema({
-  uuid: {
+  bookUuid: {
     type: String,
     required: true,
   },
