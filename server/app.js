@@ -57,6 +57,7 @@ app.get("/", (req, res) => {
 app.use(morgan("dev"));
 
 //*Listening to the server
+
 app.listen(process.env.PORT, () => {
   console.log(`this server listen to ${process.env.PORT} port `);
 });
