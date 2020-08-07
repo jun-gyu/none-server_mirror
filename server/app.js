@@ -70,7 +70,7 @@ app.get("/", (req, res) => {
 app.use(morgan("dev"));
 
 //*Listening to the server
-app.listen(process.env.PORT, () => {
+app.listen(3002, () => {
   console.log(
     `this server listen to ${process.env.PORT} port & ${process.env.AWSEC2PORT}`
   );
