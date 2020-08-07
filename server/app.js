@@ -24,19 +24,6 @@ connectDB();
  * resave - true = > 세션이 수정 되었다면 저장 false => 수정되지 않았다면 재 저장 안함.
  * saveUninitialize: true - 세션이 저장되기 전에 uninitialized 상태로 만들어 저장
  */
-// const sessionStore = new MongoStore({
-//   mongooseConnection: connectDB,
-//   collection: "sessions",
-// });
-// app.use(
-//   session({
-//     secret: process.env.SECRET,
-//     resave: false,
-//     saveUninitialized: true,
-//     // store: sessionStore,
-//     cookie: { maxAge: 1000 * 60 * 60 }, // 60분
-//   })
-// );
 
 app.use(
   cors({
@@ -70,8 +57,6 @@ app.get("/", (req, res) => {
 app.use(morgan("dev"));
 
 //*Listening to the server
-app.listen(3002, () => {
-  console.log(
-    `this server listen to ${process.env.PORT} port & ${process.env.AWSEC2PORT}`
-  );
+app.listen(process.env.PORT, () => {
+  console.log(`this server listen to ${process.env.PORT} port `);
 });
