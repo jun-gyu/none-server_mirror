@@ -61,7 +61,6 @@ router.post("/signUp", async (req, res) => {
 
     await user.save((err, docs) => {
       if (err) console.log("saving err in mongoDB", err);
-      console.log(docs);
     });
 
     res.status(200).send({ message: "thank you for signUp" });

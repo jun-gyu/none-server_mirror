@@ -14,14 +14,12 @@ router.get("/getAllBooks", authCheck, async (req, res) => {
 
   await MyLibrary.find({ user: user_id }, { __v: 0 }, async (err, docs) => {
     if (err) return res.status(401).send(err);
-
-    res.status(200).json(docs);
+    !docs.length ? res.status(200).send(null) : res.status(200).json(docs);
   });
 });
 
 router.post("/addBooks", authCheck, async (req, res) => {
   const { user_id } = req.user;
-  console.log(req.user)
   const { bookUuid, bookTitle, bookAuthor, bookImage, bookRate } = req.body;
 
   try {
@@ -45,11 +43,13 @@ router.post("/addBooks", authCheck, async (req, res) => {
 // myLibrary book delete
 router.post("/deleteBooks", authCheck, async (req, res) => {
   const { bookUuid } = req.body;
-
   //bookUuid 에 맞는 ref 북 리스트를 삭제한다.
-  await MyLibrary.remove({ bookUuid: bookUuid }, async (err) => {
-    if (err) res.status(401).send(err);
-    res.status(200).send(`delete books success`);
+  await MyLibrary.findOneAndRemove({ bookUuid: bookUuid }, async (err) => {
+    if (err) return res.status(401).send(err);
+  });
+  await Report.findOneAndRemove({ bookUuid: bookUuid }, async (err) => {
+    if (err) return res.status(401).send(err);
+    res.status(200).send(`delete reportBooks & books success`);
   });
 });
 
