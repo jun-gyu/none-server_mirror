@@ -40,7 +40,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: [`http://localhost:${process.env.PORT}`, 'http://localhost:3000'],
+    origin: [`${process.env.AWSEC2PORT}`],
     methods: ["GET", "POST"],
     credentials: true,
   })
@@ -69,5 +69,7 @@ app.use(morgan("dev"));
 
 //*Listening to the server
 app.listen(process.env.PORT, () => {
-  console.log(`this server listen to ${process.env.PORT} port`);
+  console.log(
+    `this server listen to ${process.env.PORT} port & ${process.env.AWSEC2PORT}`
+  );
 });

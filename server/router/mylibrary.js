@@ -44,10 +44,10 @@ router.post("/addBooks", authCheck, async (req, res) => {
 router.post("/deleteBooks", authCheck, async (req, res) => {
   const { bookUuid } = req.body;
   //bookUuid 에 맞는 ref 북 리스트를 삭제한다.
-  await MyLibrary.findOneAndRemove({ bookUuid: bookUuid }, async (err) => {
+  await MyLibrary.findOneAndRemove({ bookUuid: bookUuid }, (err) => {
     if (err) return res.status(401).send(err);
   });
-  await Report.findOneAndRemove({ bookUuid: bookUuid }, async (err) => {
+  await Report.findOneAndRemove({ bookUuid: bookUuid }, (err) => {
     if (err) return res.status(401).send(err);
     res.status(200).send(`delete reportBooks & books success`);
   });
