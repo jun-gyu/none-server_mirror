@@ -41,8 +41,7 @@ connectDB();
 app.use(
   cors({
     origin: [
-      `${process.env.AWSEC2PORT}`,
-      "http://check-it-out-deploy.s3-website.ap-northeast-2.amazonaws.com/",
+      "http://check-it-out-deploy.s3-website.ap-northeast-2.amazonaws.com",
     ],
     methods: ["GET", "POST"],
     credentials: true,
