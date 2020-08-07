@@ -6,34 +6,29 @@ const Users = require("../models/Users");
 const { authCheck } = require("../middleware/auth");
 
 /*
-* myLibrary/getAllBooks
-
-*/
+ * myLibrary/getAllBooks
+ */
 
 router.get("/getAllBooks", authCheck, async (req, res) => {
   const { user_id } = req.user;
 
   await MyLibrary.find({ user: user_id }, { __v: 0 }, async (err, docs) => {
     if (err) return res.status(401).send(err);
-
-    res.status(200).json({ MyLibrary: docs });
+    !docs.length ? res.status(200).send(null) : res.status(200).json(docs);
   });
 });
 
 router.post("/addBooks", authCheck, async (req, res) => {
   const { user_id } = req.user;
-
-  const { uuid, bookTitle, bookAuthor, bookImage, bookRate, report } = req.body;
+  const { bookUuid, bookTitle, bookAuthor, bookImage, bookRate } = req.body;
 
   try {
-    console.log('user', req.body)
     await MyLibrary.create({
-      uuid: uuid,
+      bookUuid: bookUuid,
       bookTitle: bookTitle,
       bookAuthor: bookAuthor[0],
       bookImage: bookImage,
       bookRate: bookRate,
-      report: report,
       user: await Users.findOne({ _id: user_id }),
     });
 
@@ -41,18 +36,20 @@ router.post("/addBooks", authCheck, async (req, res) => {
     //send 수정해야됩니다 지금은 db에 저장이 되는지 보고있슴다
     res.status(200).send("add Books success");
   } catch (err) {
-    res.status(401).send(err);
+    res.status(403).send(err);
   }
 });
 
 // myLibrary book delete
 router.post("/deleteBooks", authCheck, async (req, res) => {
-  const { uuid } = req.body;
-
-  //uuid 에 맞는 ref 북 리스트를 삭제한다.
-  await MyLibrary.remove({ uuid: uuid }, async (err) => {
-    if (err) res.status(401).send(err);
-    res.status(200).send(`delete books success`);
+  const { bookUuid } = req.body;
+  //bookUuid 에 맞는 ref 북 리스트를 삭제한다.
+  await MyLibrary.findOneAndRemove({ bookUuid: bookUuid }, async (err) => {
+    if (err) return res.status(401).send(err);
+  });
+  await Report.findOneAndRemove({ bookUuid: bookUuid }, async (err) => {
+    if (err) return res.status(401).send(err);
+    res.status(200).send(`delete reportBooks & books success`);
   });
 });
 

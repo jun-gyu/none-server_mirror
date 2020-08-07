@@ -23,7 +23,6 @@ router.post("/signIn", async (req, res) => {
 
     //DB 에 user 정보와 맞는게 있다면.!
     if (user !== null) {
-
       //create Token
       const accessToken = makeToken(user._id, user.userName, user.userEmail);
 
@@ -31,7 +30,9 @@ router.post("/signIn", async (req, res) => {
       res.header("auth-token", accessToken).send(accessToken);
     } else {
       // DB에 유저 정보와 맞는게 없다면.
-      res.status(404).send("you aren't our member , please signUp");
+      res
+        .status(404)
+        .send({ message: "you aren't our member , please signUp" });
     }
   } catch (err) {
     res.status(400).send(err);
@@ -40,7 +41,6 @@ router.post("/signIn", async (req, res) => {
 
 //* signUp Post
 router.post("/signUp", async (req, res) => {
-  console.log('sss')
   let { userName, userEmail, passWord } = req.body;
 
   const hashedPassWord = convertHash(passWord);
@@ -61,12 +61,15 @@ router.post("/signUp", async (req, res) => {
 
     await user.save((err, docs) => {
       if (err) console.log("saving err in mongoDB", err);
-      console.log(docs);
     });
 
-    res.status(200).send(`thank you for signUp`);
+    res.status(200).send({ message: "thank you for signUp" });
   } else {
-    res.status(401).send("중복된 회원입니다.");
+    res.status(403).send({ message: "중복된 회원입니다." });
+    //403 status
+    //클라이언트는 콘텐츠에 접근할 권리를 가지고 있지 않습니다.
+    //예를들어 그들은 미승인이어서 서버는 거절을 위한 적절한 응답을 보냅니다.
+    //401과 다른 점은 서버가 클라이언트가 누구인지 알고 있습니다.
   }
 });
 
